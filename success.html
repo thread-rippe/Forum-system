@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>bbs论坛</title>
+	<style type="text/css">
+	body,html{
+            margin:0;
+            padding:0;
+        }
+	.header	ul{
+            float: right;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+		}
+	.header li{
+			display: inline-block;
+		}
+	.header a{
+			display: block;
+			color: #999;
+			text-decoration: none;
+			font-size: 14px;
+		}
+	.hh{
+		    top: 30px;
+            height: 150px;
+            width: 1278px;
+		}
+		.left{
+			height: 676px;
+			width: 75%;
+			border: 1px solid #ccc;
+			float: left;
+
+		}
+		.left ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #eaebec;
+}
+.left li {
+    display: inline-block;
+    border-right:1px solid #bbb;
+}
+.left li a {
+    display: block;
+    color: #4f4f4f;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.left li a:hover:not(.active) {
+    background-color: #ddd;
+}
+.left input{
+    width: 200px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    height: 25px;
+    border-radius: 8px;
+}
+.left button{
+    border: none;
+    width: 50px;
+    height: 35px;
+    line-height: 32px;
+    font-size: 16px;
+    background: #fd4c5d;
+    color: #4f4f4f;
+    border-radius: 0 3px 3px 0;
+    padding: 0;
+}
+		.right_up{
+			height: 200px;
+			width: 24%;
+			border: 1px solid #ccc;
+			float: right;
+			background:#eaebec;
+		}
+		.right_down{
+			height: 250px;
+			width: 24%;
+			margin-top: 10px; 
+			border: 1px solid #ccc;
+			float: right;
+			background: #eaebec;
+		}
+		.right_down a{
+         padding: 8px 16px;
+         text-decoration: none;
+		}
+		.time{
+			font-size: 12px;
+		}
+		.title a{
+    text-decoration: none;
+		}
+		.tc a{
+    text-decoration: none;
+		}
+	.zebra th{
+		padding: 10px 0px;
+    background: #069;
+    color: white;
+	}
+	.footer	ul{
+            list-style-type: none;
+		}
+	.footer li{
+		padding: 2px 4px;
+			display: inline-block;
+		}
+	.footer a{
+			display: block;
+			color: #999;
+			text-decoration: none;
+			font-size: 16px;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+<ul>
+	<span style="font-size: 14px;">欢迎您，</span>
+	<li><a class="active" href="">${username}</a></li>
+  <li><a href="">个人资料</a></li>
+	<li><a href="back_login.html">管理员</a></li>
+	<li><a href="connect.html">关于我们</a></li>
+</ul>
+    </div>
+    <div class="hh">
+    	<img src="images/BBS.jpg" height="149" width="200">
+    </div>
+    <div class="left">
+    	<ul>
+    		<li><a href="index.html">论坛首页</a></li>
+    		<li><a href="javasrcipt:;">精华帖子</a></li>
+    		<li><a href="javasrcipt:;">专题</a></li>
+    		<li><a href="javasrcipt:;">热门</a></li>
+    		<li><a href="javasrcipt:;">我要发帖</a></li>
+    		<li><a href="javasrcipt:;">论坛帮助</a></li>
+    		<input type="date" name="">
+    		<button type="submit"><span>查找</span></button>
+    	</ul>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_list parent_forum ">
+    <colgroup>
+      <col>
+      <col width="60px">
+      <col width="120px">
+      <col width="60px">
+      <col width="120px">
+      <col width="60px">
+    </colgroup>
+    <tbody><tr class="zebra">
+      <th>标题</th>
+      <th class="tc">分数</th>
+      <th class="tc">提问人</th>
+      <th class="tc">回复数</th>
+      <th class="tc">最后更新时间</th>
+      <th class="tc">功能</th>
+    </tr>
+          <tr>
+    <td class="title">
+      <strong class="green">？</strong>
+        <span class="green">[置顶]</span>
+      <a href="/topics/392371067" class="title_style_red title_style_bold" target="_blank" title="【新手提问导读】提问的艺术">【新手提问导读】提问的艺术</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/J2EE">Java EE</a>]</span>
+    </td>
+    <td class="tc">100</td>
+    <td class="tc">
+      <a href="//my.csdn.net/shijing266" rel="nofollow" target="_blank" title="执笔记忆的空白">执笔记忆的空白</a><br>
+      <span class="time">2018-05-03 12:04</span></td>
+    <td class="tc">17</td>
+    <td class="tc">
+      <a href="//my.csdn.net/WWL_turbo" rel="nofollow" target="_blank" title="WWL_turbo">WWL_turbo</a><br>
+      <span class="time">2018-06-06 15:16</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392371067/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr class="zebra">
+    <td class="title">
+      <strong class="red">√</strong>
+        <span class="green">[置顶]</span>
+      <a href="/topics/392378247" target="_blank" title="科大讯飞AIUI3.0发布会邀您见证人工智能盛事">科大讯飞AIUI3.0发布会邀您见证人工智能盛事</a>
+        <span class="red">[推荐]</span>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Embedded">硬件/嵌入开发</a></span> <a href="/forums/SmartHardware">智能硬件</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/CSDNhanrui" rel="nofollow" target="_blank" title="CSDNhanrui">CSDNhanrui</a><br>
+      <span class="time">2018-05-14 11:16</span></td>
+    <td class="tc">14</td>
+    <td class="tc">
+      <a href="//my.csdn.net/qq_34758776" rel="nofollow" target="_blank" title="老夫不太服">老夫不太服</a><br>
+      <span class="time">2018-06-01 14:00</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392378247/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="title">
+      <strong class="green">？</strong>
+        <span class="green">[置顶]</span>
+      <a href="/topics/392393002" target="_blank" title="什么仇？什么怨？我竟然爱上大数据了！">什么仇？什么怨？我竟然爱上大数据了！</a>
+        <span class="red">[推荐]</span>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/J2EE">Java EE</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/HXDHXD1" rel="nofollow" target="_blank" title="HXDHXD1">HXDHXD1</a><br>
+      <span class="time">2018-06-06 11:05</span></td>
+    <td class="tc">10</td>
+    <td class="tc">
+      <a href="//my.csdn.net/hatumeng" rel="nofollow" target="_blank" title="echotop">echotop</a><br>
+      <span class="time">2018-06-07 18:54</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392393002/close" target="_blank">管理</a>
+    </td>
+  </tr>
+
+          <tr class="zebra">
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394473" target="_blank" title="计算一个正整数各位和直到和小于10 问题">计算一个正整数各位和直到和小于10 问题</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/J2SE">Java SE</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/qq_41333485" rel="nofollow" target="_blank" title="qq_41333485">qq_41333485</a><br>
+      <span class="time">2018-06-08 10:23</span></td>
+    <td class="tc">1</td>
+    <td class="tc">
+      <a href="//my.csdn.net/tp" rel="nofollow" target="_blank" title="tp">tp</a><br>
+      <span class="time">2018-06-08 10:54</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394473/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394202" target="_blank" title="求教IEDA连接SQL时Tomcat报错的问题">求教IEDA连接SQL时Tomcat报错的问题</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/Java_WebDevelop">Web 开发</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/weixin_41546635" rel="nofollow" target="_blank" title="weixin_41546635">weixin_41546635</a><br>
+      <span class="time">2018-06-07 22:51</span></td>
+    <td class="tc">1</td>
+    <td class="tc">
+      <a href="//my.csdn.net/xiaobudian0381" rel="nofollow" target="_blank" title="xiao潇">xiao潇</a><br>
+      <span class="time">2018-06-08 10:53</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394202/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr class="zebra">
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394513" target="_blank" title="tomcat发布webservice，wsdl可以访问到。调用时报404">tomcat发布webservice，wsdl可以访问到。调用时报404</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/Java_WebDevelop">Web 开发</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/Akarain" rel="nofollow" target="_blank" title="Akarain">Akarain</a><br>
+      <span class="time">2018-06-08 10:50</span></td>
+    <td class="tc">0</td>
+    <td class="tc">
+      <a href="//my.csdn.net/Akarain" rel="nofollow" target="_blank" title="Akarain">Akarain</a><br>
+      <span class="time">2018-06-08 10:50</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394513/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394475" target="_blank" title="java集合的增删问题">java集合的增删问题</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/J2SE">Java SE</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/zj477520" rel="nofollow" target="_blank" title="zj477520">zj477520</a><br>
+      <span class="time">2018-06-08 10:26</span></td>
+    <td class="tc">2</td>
+    <td class="tc">
+      <a href="//my.csdn.net/zj477520" rel="nofollow" target="_blank" title="zj477520">zj477520</a><br>
+      <span class="time">2018-06-08 10:48</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394475/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr class="zebra">
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/390974715" target="_blank" title="求救~Hibernate 调用了一次方法，sql语句打印了两次">求救~Hibernate 调用了一次方法，sql语句打印了两次</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/Java_WebDevelop">Web 开发</a>]</span>
+    </td>
+    <td class="tc">40</td>
+    <td class="tc">
+      <a href="//my.csdn.net/z346634104" rel="nofollow" target="_blank" title="-Kylin">-Kylin</a><br>
+      <span class="time">2015-01-20 17:06</span></td>
+    <td class="tc">22</td>
+    <td class="tc">
+      <a href="//my.csdn.net/time_age" rel="nofollow" target="_blank" title="time_age">time_age</a><br>
+      <span class="time">2018-06-08 10:45</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/390974715/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392390341" target="_blank" title="UML里用例图（User Case）和类图（Class）的关系">UML里用例图（User Case）和类图（Class）的关系</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/J2EE">Java EE</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/Raffin" rel="nofollow" target="_blank" title="鸣鸣小恶魔">鸣鸣小恶魔</a><br>
+      <span class="time">2018-06-01 20:18</span></td>
+    <td class="tc">7</td>
+    <td class="tc">
+      <a href="//my.csdn.net/tp" rel="nofollow" target="_blank" title="tp">tp</a><br>
+      <span class="time">2018-06-08 10:45</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392390341/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr class="zebra">
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394497" target="_blank" title="微服务需要把service和dao层分别打包吗?">微服务需要把service和dao层分别打包吗?</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/J2EE">Java EE</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/longfulong" rel="nofollow" target="_blank" title="longfulong">longfulong</a><br>
+      <span class="time">2018-06-08 10:40</span></td>
+    <td class="tc">0</td>
+    <td class="tc">
+      <a href="//my.csdn.net/longfulong" rel="nofollow" target="_blank" title="longfulong">longfulong</a><br>
+      <span class="time">2018-06-08 10:40</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394497/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394229" target="_blank" title="在servlet中sql语句能正常输出，但传值到jsp页面就报空指针，为什么呢">在servlet中sql语句能正常输出，但传值到jsp页面就报空指针，为什么呢</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/Eclipse">Eclipse</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/weixin_42413125" rel="nofollow" target="_blank" title="weixin_42413125">weixin_42413125</a><br>
+      <span class="time">2018-06-08 00:34</span></td>
+    <td class="tc">3</td>
+    <td class="tc">
+      <a href="//my.csdn.net/stacksoverflow" rel="nofollow" target="_blank" title="stacksoverflow">stacksoverflow</a><br>
+      <span class="time">2018-06-08 10:36</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394229/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr class="zebra">
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394469" target="_blank" title="Java 怎么爬取搜狗微信搜索的文章内容呀。求大神">Java 怎么爬取搜狗微信搜索的文章内容呀。求大神</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/Java_WebDevelop">Web 开发</a>]</span>
+    </td>
+    <td class="tc">200</td>
+    <td class="tc">
+      <a href="//my.csdn.net/qq_37795435" rel="nofollow" target="_blank" title="qq_37795435">qq_37795435</a><br>
+      <span class="time">2018-06-08 10:08</span></td>
+    <td class="tc">1</td>
+    <td class="tc">
+      <a href="//my.csdn.net/u012171905" rel="nofollow" target="_blank" title="Coder_D">Coder_D</a><br>
+      <span class="time">2018-06-08 10:33</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394469/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="title">
+      <strong class="green">？</strong>
+      <a href="/topics/392394436" target="_blank" title="求大神帮帮我，保住这份工作啊">求大神帮帮我，保住这份工作啊</a>
+      <span class="forum_link">[<span class="parent"><a href="/forums/Java">Java</a></span> <a href="/forums/J2EE">Java EE</a>]</span>
+    </td>
+    <td class="tc">50</td>
+    <td class="tc">
+      <a href="//my.csdn.net/cuychen" rel="nofollow" target="_blank" title="cuychen">cuychen</a><br>
+      <span class="time">2018-06-08 10:00</span></td>
+    <td class="tc">4</td>
+    <td class="tc">
+      <a href="//my.csdn.net/maradona1984" rel="nofollow" target="_blank" title="maradona1984">maradona1984</a><br>
+      <span class="time">2018-06-08 10:27</span>
+    </td>
+    <td class="tc">
+      <a href="/topics/392394436/close" target="_blank">管理</a>
+    </td>
+  </tr>
+  
+  </tbody></table>
+
+<nav aria-label="Page navigation" style="float: right;">
+  <ul class="pagination">
+    <li>
+      <a href="javasrcipt:;" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li><a href="javasrcipt:;">1</a></li>
+    <li><a href="javasrcipt:;">2</a></li>
+    <li><a href="javasrcipt:;">3</a></li>
+    <li><a href="javasrcipt:;">4</a></li>
+    <li><a href="javasrcipt:;">5</a></li>
+    <li>
+      <a href="javasrcipt:;" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+    </div>
+    <div class="right_up">
+    	<span style="color: blue;margin-left: 120px;font-size: 20px;">公告栏</span>
+    	<hr />
+    </div>
+    <div class="right_down">
+    	<span style="color: blue;margin-left: 120px;font-size: 20px;">版面简介</span>
+    	<hr />
+    <span style="font-size: 16px;">现任版主：</span>
+    <span><a  href="javasrcipt:;">目小温</a></span>
+    <span><a  href="javasrcipt:;">张三三</a></span>
+    <span><a  href="javasrcipt:;">刘学</a></span>
+    <span><a  href="javasrcipt:;">陈旺</a></span>
+    <span><a  href="javasrcipt:;">薛龙兴</a></span><br>
+    <a href="javasrcipt:;">
+    	<img src="images/banzhu.png">
+    </a>
+    </div>
+    <footer style="float: left;">
+    	<div class="footer">
+    	<ul>
+    		<li><a href="javasrcipt:;">公司简介</a></li>
+    		<li><a href="javasrcipt:;">招贤纳士</a></li>
+    		<li><a href="javasrcipt:;">广告服务</a></li>
+    		<li><a href="javasrcipt:;">联系方式</a></li>
+    		<li><a href="javasrcipt:;">版权声明</a></li>
+    		<li><a href="javasrcipt:;">法律顾问</a></li>
+    		<li><a href="javasrcipt:;">合作伙伴</a></li>
+    		<li><a href="javasrcipt:;">论坛反馈</a></li>
+    	</ul>
+    	</div>
+    	<hr/>
+    	<dd class="foot_contact">
+    		<a href="javascript:void(0)" target="_blank" class="qq qqcustomer_s">网站客服</a>
+    		<span class="interval">|</span>
+    		<a href="javascript:void(0)" target="_blank" class="qq">杂志客服</a>
+    		<span class="interval">|</span>
+    		<a href="javascript:void(0)" target="_blank" class="weibo">微博客服</a>
+    		<span class="interval">|</span>
+    		<a href="http://www.lindows.xyz/talk.html" target="_blank" class="email" title="联系邮箱">www.lindows.xyz</a>
+    		<span class="interval">|</span>
+    		<span class="phone" title="服务热线">100-100-0100</span>
+    		<span class="interval">|</span>
+    		<span>南昌大学某某某小组 版权所有</span>
+    	</dd>
+    </footer>
+</body>
+</html>
