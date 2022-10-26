@@ -8,27 +8,27 @@
 using namespace std;
 
 template <typename T>
-class thread_poll
+class threadpoll
 {
 public:
-    thread_poll(int thread_number = 8);
-    ~thread_poll();
+    threadpoll(int thread_number = 8);
+    ~threadpoll();
     bool append(T& request);
     
 private:
     static void* worker(void* arg);     //供多线程调用的静态函数
     void run();
 
-    sbuf<T> lock                           //在lock文件中实现的队列锁。
+    sbuf<T> lock;                           //在lock文件中实现的队列锁。
     int m_thread_number;//最大进程数
     bool m_stop;                        //是否停止
 };
 
 template< typename T >
-threadpool< T >:: threadpool(int thread_number):
+threadpoll< T >:: threadpoll(int thread_number):
     m_thread_number(thread_number), lock(500), m_stop(false){
         //错误处理
-        if(( thread_number <= 0 ) || (max_requests <= 0)){
+        if(( thread_number <= 0 )){
             throw std::exception();
         }
 
@@ -40,7 +40,7 @@ threadpool< T >:: threadpool(int thread_number):
     }
 
 template< typename T >
-threadpool< T >::~threadpool(){
+threadpoll< T >::~threadpoll(){
     m_stop = true;
 }
 

@@ -11,9 +11,9 @@
 #include <sys/epoll.h>
 #include <vector>
 
-#include "thread_poll/thread_pool.h"
-#include "sql_poll/sql_poll.h"
-#include "http/http_conn.h"
+#include "./thread_poll/thread_poll.h"
+#include "./sql_poll/sql_poll.h"
+#include "./http/http_conn.h"
 
 #define MAX_FD 65536
 #define MAX_EVENT_NUMBER 10000
