@@ -19,7 +19,7 @@ private:
     static void* worker(void* arg);     //供多线程调用的静态函数
     void run();
 
-    sbuf lock                           //在lock文件中实现的队列锁。
+    sbuf<T> lock                           //在lock文件中实现的队列锁。
     int m_thread_number;//最大进程数
     bool m_stop;                        //是否停止
 };
