@@ -99,5 +99,31 @@ private:
     int m_checked_idx;
     int m_start_line;
     string m_write_buf;
+    
+    /*主状态机当前所处的状态*/
+    CHECK_STATE m_check_state;
+    /*请求方法*/
+    METHOD m_method;
 
-}
+    /*客户请求的目标文件的完整路径，其内容等于doc_root + m_url,doc_root是网络根目录*/
+    char m_real_file[FILENAME_LEN];
+    /*客户请求的目标文件的文件名*/
+    char* m_url;
+    /*HTTP协议版本号，我们仅支持HTTP/1.1*/
+    char* m_version;
+    /*主机名*/
+    char* m_host;
+    /*HTTP请求的消息体长度*/
+    int m_content_length;
+    /*HTTP请求是否要求保持连接*/
+    bool m_linger;
+
+    /*客户请求的目标文件被mmap到内存中的起始位置*/
+    char* m_file_address;
+    /*目标文件的状态。通过它我们可以判断文件是否存在，是否为目录，是否可读，并获取文件大小等信息*/
+    struct stat m_file_stat;
+    /*我们将采用writev来执行写操作，所以定义下面两个成员，其中m_iv_count表示被写内存块的数量*/
+    struct iove m_iv[2];
+    int m_iv_count;
+};
+#endif
