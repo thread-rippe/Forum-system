@@ -24,6 +24,8 @@
 #include <condition_variable>
 #include <chrono>
 #include <mysql/mysql.h>
+#include <random>
+#include <ctime>
 #include "sql/sql_method.h"
 using namespace std;
 
@@ -104,12 +106,13 @@ pid_t Wait(int *status);
 class Mission {
 	using Action = void (Mission::*)(const string&);
 private:
+
 	//这个method用来保存不同请求方法对应的函数
     unordered_map<string, Action> method;
 	//conned是初始化的连接描述符
 	int conned;
 	M_sql sql_connect;
-    string id;                                  //用户id
+    string name;                                  //用户id
     string cookie;                              //当前连接的cookie
 
 	//此函数用来处理错误
@@ -134,6 +137,7 @@ private:
 	
     //自处理相关函数
     void make_cookie();
+    bool catch_cookie(const string& string);
 
 public:
 	Mission(int connect, MYSQL* s_connect):conned(connect), sql_connect(s_connect) 

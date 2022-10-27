@@ -409,7 +409,7 @@ void Mission::serve_static(string& filename, int filesize){
 
         get_filetype(filename, filetype);
         buf += "HTTP/1.0 200 OK\r\n";
-        if(cookie.size() == 0){
+        if(cookie.size() != 0){
             buf += "set-Cookie:id=" + cookie + "\r\n";
         }
         buf += "Server: Tiny Web Server\r\n";
@@ -463,7 +463,7 @@ void Mission::start(){
         cout << buf;
 
         string usrbuf(buf);
-        cout << "string类报头：" << endl;
+        //cout << "string类报头：" << endl;
         cout << usrbuf;
         istringstream input(usrbuf);
         string me, uri, version;
@@ -471,16 +471,32 @@ void Mission::start(){
 	read_requesthdrs(&rio);
         (this->*method[me])(uri);
 }
+
 void Mission::read_requesthdrs(rio_t *rp){
 	char buf[MAXLINE];
-
         rio_Readlineb(rp, buf, MAXLINE);
         while(strcmp(buf, "\r\n")){
                 rio_Readlineb(rp, buf, MAXLINE);
+                string temp(buf);
+                if(temp.find("Cookie:") != string::npos){
+                    if(catch_cookie(temp)){
+                        if(name.size() != 0){                                                                                                                                      
+                           sql_connect.set_cookie(cookie, name);                                                                                                                  
+                        }else{                                                                                                                                                     
+                            if(!sql_connect.find_cookie(cookie, name)){                                                                                                            
+                                name = "";                                                                                                                                         
+                                cout << "cookie查找失败" << endl;                                                                                                                  
+                            }else{                                                                                                                                                 
+                                cout << "获取成功" << endl;                                                                                                                        
+                            }                                                                                                                                                      
+                        }   
+                    }
+                }
                 cout << buf;
         }
         return;
 }
+
 void Mission::Get(const string& uri){
 	string errcode, errmsg;
 	string filename, cgiargs;
@@ -537,6 +553,31 @@ void Mission::Options(const string& uri){
 void Mission::Trace(const string& uri){
 	string errcode = "501", errmsg = "未实现";    
         error(errcode, errmsg);
+}
+
+void Mission::make_cookie(){
+    default_random_engine e(time(0));
+    string target = "";
+    uniform_int_distribution<unsigned> one_two(1, 2), lower(97, 122), upper(65, 90);
+    for(int i = 0; i < 16; ++i){
+        if(one_two(e) == 1){
+            target += static_cast<char>(lower(e));
+        }else{
+            target += static_cast<char>(upper(e));
+        }
+    }
+    cookie = target;
+}
+
+bool Mission::catch_cookie(const string& string_has_cookie){
+    auto index = string_has_cookie.find("id=");
+    index += 3;
+    if(index >= string_has_cookie.size() || index + 16 > string_has_cookie.size()){
+        return false;
+    }
+    cookie = string_has_cookie.substr(index, 16);
+    cout << "获取到的cookie为：" << cookie << endl;
+    return true;
 }
 
 //sbuf函数实现
