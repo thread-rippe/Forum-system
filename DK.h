@@ -24,7 +24,7 @@
 #include <condition_variable>
 #include <chrono>
 #include <mysql/mysql.h>
-#include "sql/sql_methed.h"
+#include "sql/sql_method.h"
 using namespace std;
 
 const int RIO_BUFSIZE = 8192;
@@ -109,6 +109,8 @@ private:
 	//conned是初始化的连接描述符
 	int conned;
 	M_sql sql_connect;
+    string id;                                  //用户id
+    string cookie;                              //当前连接的cookie
 
 	//此函数用来处理错误
 	void error(const string& errcode, const string& errmsg);
@@ -131,7 +133,7 @@ private:
 	void Trace(const string& uri);
 	
 public:
-	Mission(int connect, MTSQL* s_connect):conned(connect), sql_connect(s_connect) 
+	Mission(int connect, MYSQL* s_connect):conned(connect), sql_connect(s_connect) 
 	{
 		method["GET"] = &Mission::Get;
         	method["HEAD"] = &Mission::Head;
@@ -160,7 +162,7 @@ public:
 
 //生产者消费者模型的缓冲区实现
 //使用循环队列模型外加多线程操作
-template<T>
+template<typename T>
 class sbuf{
 private:
 	vector<T*> buf; //保存描述符的
@@ -170,7 +172,7 @@ private:
 	condition_variable cnd;	
 
 public:
-	sbuf(int max): maxlen(max), buf(max + 1,nullptr), front(0), tail(0) {};
+    sbuf(int max): maxlen(max), buf(max + 1, nullptr), front(0), tail(0) {};
 	~sbuf() = default;
 	
 	//明确删除我不需要的函数
