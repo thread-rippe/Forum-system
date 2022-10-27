@@ -1,4 +1,6 @@
+#pragma once
 #include <mysql/mysql.h>
+#include <string>
 using namespace std;
 
 class M_sql{
@@ -13,7 +15,7 @@ public:
     M_sql(MYSQL* link){
         this->link = link;
     }
-    ~M_sql(MYSQL* link) = default;
+    ~M_sql() = default;
 
     //查找对应cookie是否在数据库中,如果在数据库中，则返回true并将用户名写入id变量中；如果不在，返回false，id变量不管
     bool find_cookie(const string& cookie, string& id);

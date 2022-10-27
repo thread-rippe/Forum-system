@@ -408,7 +408,8 @@ void Mission::serve_static(string& filename, int filesize){
         string filetype, buf = "";
 
         get_filetype(filename, filetype);
-        buf += "HTTP/1.0 200 OK\r\nset-Cookie:id=babau\r\n";
+        buf += "HTTP/1.0 200 OK\r\n";
+        buf += "set-Cookie:id=" + m_cookie + "\r\n";
         buf += "Server: Tiny Web Server\r\n";
         buf += "Connection: close\r\n";
         buf += "Content-length: " + to_string(filesize) + "\r\n";
@@ -488,7 +489,7 @@ void Mission::Get(const string& uri){
 
         if(is_static){
                 if(!(S_ISREG(sbuf.st_mode)) || !(S_IRUSR & sbuf.st_mode)){
-                        errcode = "403", errmsg = "无权限查看";
+                        errcode = "403", errmsg = "无权限查看无权限查看";
                         error(errcode, errmsg);
                         return;
                 }
@@ -534,18 +535,21 @@ void Mission::Trace(const string& uri){
 }
 
 //sbuf函数实现
-void sbuf::insert(int conned){
+template<typename T>
+void sbuf<T>::insert(T* conned){
 	unique_lock<mutex> locker(mtx);
 	cnd.wait(locker, [this](){ return (tail + 1) % (maxlen + 1) != front; });
 	buf[tail] = conned;
 	++tail;
 	tail %= (maxlen + 1);
 	cnd.notify_one();
+    //加一行注释
 }
-int sbuf::get(){
+template<typename T>
+T* sbuf<T>::get(){
 	unique_lock<mutex> locker(mtx);
 	cnd.wait(locker, [this](){ return tail != front;});
-	int ret = buf[front];
+	auto ret = buf[front];
 	++front;
 	front %= (maxlen + 1);
 	cnd.notify_one();
