@@ -387,7 +387,7 @@ bool Mission::parse_uri(const string& uri, string& filename, string& cgiargs){
                 cgiargs = "";
                 filename = "." + uri;
                 if(uri.size() == 1 && uri[0] == '/'){
-                        filename += "home.html";
+                        filename += "/html/home.html";
                 }
                 return true;
         }else{
