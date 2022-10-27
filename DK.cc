@@ -78,7 +78,7 @@ static ssize_t rio_read(rio_t *rp, char *usrbuf, size_t n){
 	int cnt;
 	
 	while (rp->rio_cnt <= 0) {
-		rp->rio_cnt = read(rp->rio_fd, rp->rio_buf, sizeof(rp->rio_buf));
+		rp->rio_cnt = recv(rp->rio_fd, rp->rio_buf, sizeof(rp->rio_buf), 0);
 		if (rp->rio_cnt < 0) {
 			if(errno != EINTR)
 				return -1;
@@ -454,7 +454,7 @@ void Mission::get_filetype(string& filename, string& filetype){
                 filetype = "text/plain";
 }
 void Mission::start(){
-    cout << "开始喽" << endl;    
+    //cout << "开始喽" << endl;    
     char buf[MAXLINE];
         rio_t rio;
         rio_Readinitb(&rio, conned);
@@ -468,7 +468,10 @@ void Mission::start(){
         istringstream input(usrbuf);
         string me, uri, version;
         input >> me >> uri >> version;
-	read_requesthdrs(&rio);
+	    read_requesthdrs(&rio);
+        if(cookie.size() == 0){
+            make_cookie();
+        }
         (this->*method[me])(uri);
 }
 
@@ -478,17 +481,18 @@ void Mission::read_requesthdrs(rio_t *rp){
         while(strcmp(buf, "\r\n")){
                 rio_Readlineb(rp, buf, MAXLINE);
                 string temp(buf);
+                //cout << temp << endl;
                 if(temp.find("Cookie:") != string::npos){
                     if(catch_cookie(temp)){
                         if(name.size() != 0){                                                                                                                                      
                            sql_connect.set_cookie(cookie, name);                                                                                                                  
                         }else{                                                                                                                                                     
-                            if(!sql_connect.find_cookie(cookie, name)){                                                                                                            
-                                name = "";                                                                                                                                         
-                                cout << "cookie查找失败" << endl;                                                                                                                  
-                            }else{                                                                                                                                                 
-                                cout << "获取成功" << endl;                                                                                                                        
-                            }                                                                                                                                                      
+                            //if(!sql_connect.find_cookie(cookie, name)){                                                                                                            
+                            //    name = "";                                                                                                                                         
+                            //    cout << "cookie查找失败" << endl;                                                                                                                  
+                            //}else{                                                                                                                                                 
+                            //    cout << "获取成功" << endl;                                                                                                                        
+                            //}                                                                                                                                                      
                         }   
                     }
                 }
@@ -570,19 +574,23 @@ void Mission::make_cookie(){
 }
 
 bool Mission::catch_cookie(const string& string_has_cookie){
-    auto index = string_has_cookie.find("id=");
+    string temp = string_has_cookie;
+    while(temp.find(';') != string::npos){
+        temp = temp.substr(temp.find(";") + 1);
+    }
+    auto index = temp.find("id=");
     index += 3;
     if(index >= string_has_cookie.size() || index + 16 > string_has_cookie.size()){
         return false;
     }
-    cookie = string_has_cookie.substr(index, 16);
+    cookie = temp.substr(index, 16);
     cout << "获取到的cookie为：" << cookie << endl;
     return true;
 }
 
 //sbuf函数实现
 template<typename T>
-void sbuf<T>::insert(T* conned){
+void sbuf<T>::insert(T conned){
 	unique_lock<mutex> locker(mtx);
 	cnd.wait(locker, [this](){ return (tail + 1) % (maxlen + 1) != front; });
 	buf[tail] = conned;
@@ -592,7 +600,7 @@ void sbuf<T>::insert(T* conned){
     //加一行注释
 }
 template<typename T>
-T* sbuf<T>::get(){
+T sbuf<T>::get(){
 	unique_lock<mutex> locker(mtx);
 	cnd.wait(locker, [this](){ return tail != front;});
 	auto ret = buf[front];

@@ -9,7 +9,6 @@ void clienterror(int fd, const string& cause, const string& errnum, const string
 void doit(int fd);
 
 const int MAX_THREAD = 8;
-const int MAX_LINK = 8;
 
 const string host = "127.0.0.1";
 const string user = "root";
@@ -41,14 +40,14 @@ int main(int argc, char **argv){
 		Getnameinfo(reinterpret_cast<SA *>(&clientaddr), clientlen, hostname, MAXLINE, port, MAXLINE, 0);
 		cout << "连接到：" << hostname << " " << port << " " << endl;
 		//cout << "新的连接！！" << endl << endl;
-		usr_buf.insert(&connfd);
+		usr_buf.insert(connfd);
 	}
 	return 0;
 }
 
 void doit(int _){
 	while(1){
-		int* temp = usr_buf.get();
+		int temp = usr_buf.get();
         MYSQL mysql;
         if(mysql_init(&mysql) == nullptr){
             cout << "初始化错误" << endl;
@@ -58,7 +57,7 @@ void doit(int _){
             cout << "连接失败" << endl;
             exit(1);
         }
-		Mission cur_m(*temp, &mysql);
+		Mission cur_m(temp, &mysql);
 		cur_m.start();
         mysql_close(&mysql);
 	}

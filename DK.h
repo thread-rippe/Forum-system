@@ -172,14 +172,14 @@ public:
 template<typename T>
 class sbuf{
 private:
-	vector<T*> buf; //保存描述符的
+	vector<T> buf; //保存描述符的
 	int maxlen; //最大容量
 	int front, tail; //头指针尾指针
 	mutex mtx;
 	condition_variable cnd;	
 
 public:
-    sbuf(int max): maxlen(max), buf(max + 1, nullptr), front(0), tail(0) {};
+    sbuf(int max): maxlen(max), buf(max + 1), front(0), tail(0) {};
 	~sbuf() = default;
 	
 	//明确删除我不需要的函数
@@ -187,8 +187,8 @@ public:
 	sbuf& operator=(const sbuf&) = delete;
 
 	//向数组中插入删除描述符
-	void insert(T* conned);
-	T* get();
+	void insert(T conned);
+	T get();
 };
 
 #endif
