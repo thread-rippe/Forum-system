@@ -454,7 +454,8 @@ void Mission::get_filetype(string& filename, string& filetype){
                 filetype = "text/plain";
 }
 void Mission::start(){
-        char buf[MAXLINE];
+    cout << "开始喽" << endl;    
+    char buf[MAXLINE];
         rio_t rio;
         rio_Readinitb(&rio, conned);
         rio_Readlineb(&rio, buf, MAXLINE);

@@ -17,7 +17,6 @@ const string passwd = "240307";
 const string database = "student";
 
 sbuf<int> usr_buf(MAX_THREAD);
-sbuf<MYSQL> sql_buf(MAX_LINK);
 int main(int argc, char **argv){
 	int listenfd, connfd;
 	char hostname[MAXLINE], port[MAXLINE];
@@ -34,19 +33,6 @@ int main(int argc, char **argv){
 		temp.detach();
         cout << "线程创建" << i << endl;
 	}
-    for(int i = 0; i < MAX_LINK; ++i){
-        MYSQL mysql;
-        if(mysql_init(&mysql) == nullptr){
-            cout << "数据库初始化错误" << endl;
-            exit(1);
-        }
-        if(!mysql_real_connect(&mysql, host.c_str(), user.c_str(), passwd.c_str(), database.c_str(), 0, nullptr, 0)){
-            cout << "连接失败" << endl;
-            exit(1);
-        }
-        sql_buf.insert(&mysql);
-        cout << "数据库连接" << i << endl;
-    }
 
 	listenfd = Open_listenfd(argv[1]);
 	while(1){
@@ -63,9 +49,17 @@ int main(int argc, char **argv){
 void doit(int _){
 	while(1){
 		int* temp = usr_buf.get();
-        MYSQL* sql = sql_buf.get();
-		Mission cur_m(*temp, sql);
+        MYSQL mysql;
+        if(mysql_init(&mysql) == nullptr){
+            cout << "初始化错误" << endl;
+            exit(1);
+        }
+        if(!mysql_real_connect(&mysql, host.c_str(), user.c_str(), passwd.c_str(), database.c_str(), 0, nullptr, 0)){
+            cout << "连接失败" << endl;
+            exit(1);
+        }
+		Mission cur_m(*temp, &mysql);
 		cur_m.start();
-        sql_buf.insert(sql);
+        mysql_close(&mysql);
 	}
 }
