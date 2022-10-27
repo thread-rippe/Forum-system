@@ -33,7 +33,7 @@ bool M_sql::new_user(const string& Uname, const string& passwd, const string& Ag
 bool M_sql::confirm_user(const string& user_id, const string& passwd)
 {
 	string sql = "select * from person where user = "+user_id;
-	mysql_query(link, sql.c_str())
+	mysql_query(link, sql.c_str());
 	result = mysql_store_result(link);
 	if (row = mysql_fetch_row(result))
 	{

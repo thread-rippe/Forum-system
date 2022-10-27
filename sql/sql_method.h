@@ -24,4 +24,4 @@ public:
     //确认用户，查找是否有这个用户并且密码正确如果没问题则返回true，有问题返回false
     bool confirm_user(const string& user_id, const string& passwd);
     bool set_cookie(const string& cookie, const string& name);
-}
+};
