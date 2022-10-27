@@ -105,7 +105,7 @@ class Mission {
 	using Action = void (Mission::*)(const string&);
 private:
 	//这个method用来保存不同请求方法对应的函数
-	unordered_map<string, Action> method;
+    unordered_map<string, Action> method;
 	//conned是初始化的连接描述符
 	int conned;
 	M_sql sql_connect;
@@ -132,6 +132,9 @@ private:
 	void Options(const string& uri);
 	void Trace(const string& uri);
 	
+    //自处理相关函数
+    void make_cookie();
+
 public:
 	Mission(int connect, MYSQL* s_connect):conned(connect), sql_connect(s_connect) 
 	{

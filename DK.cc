@@ -409,7 +409,9 @@ void Mission::serve_static(string& filename, int filesize){
 
         get_filetype(filename, filetype);
         buf += "HTTP/1.0 200 OK\r\n";
-        buf += "set-Cookie:id=" + m_cookie + "\r\n";
+        if(cookie.size() == 0){
+            buf += "set-Cookie:id=" + cookie + "\r\n";
+        }
         buf += "Server: Tiny Web Server\r\n";
         buf += "Connection: close\r\n";
         buf += "Content-length: " + to_string(filesize) + "\r\n";
@@ -460,6 +462,8 @@ void Mission::start(){
         cout << buf;
 
         string usrbuf(buf);
+        cout << "string类报头：" << endl;
+        cout << usrbuf;
         istringstream input(usrbuf);
         string me, uri, version;
         input >> me >> uri >> version;
