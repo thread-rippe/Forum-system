@@ -105,15 +105,18 @@ pid_t Wait(int *status);
 //重点处理网页请求的类
 class Mission {
 	using Action = void (Mission::*)(const string&);
+    using Way = void(Mission::*)();
 private:
 
 	//这个method用来保存不同请求方法对应的函数
     unordered_map<string, Action> method;
+    unordered_map<string, Way>post_way;
 	//conned是初始化的连接描述符
 	int conned;
 	M_sql sql_connect;
     string name;                                  //用户id
     string cookie;                              //当前连接的cookie
+    string data;                                //post方法将给出的数据
 
 	//此函数用来处理错误
 	void error(const string& errcode, const string& errmsg);
@@ -135,21 +138,33 @@ private:
 	void Options(const string& uri);
 	void Trace(const string& uri);
 	
+    void Register();
+
     //自处理相关函数
     void make_cookie();
     bool catch_cookie(const string& string);
+    int read_all(char* buf);
+    string splice_string(string& data);                   //将post发过来的数据先一步解析;
 
+    //url解析
+    string url_decode(const string& src);
+    const string URLHEXMAP = "0123456789ABCDEF";
+
+    //数据库相关
+    bool set_cookie();
+    bool find_cookie();
 public:
 	Mission(int connect, MYSQL* s_connect):conned(connect), sql_connect(s_connect) 
 	{
 		method["GET"] = &Mission::Get;
-        	method["HEAD"] = &Mission::Head;
-        	method["POST"] = &Mission::Post;
-        	method["PUT"] = &Mission::Put;
-        	method["DELETE"] = &Mission::Delete;
-        	method["CONNECT"] = &Mission::Connect;
-        	method["OPTIONS"] = &Mission::Options;
-        	method["TRACE"] = &Mission::Trace;
+    	method["HEAD"] = &Mission::Head;
+    	method["POST"] = &Mission::Post;
+    	method["PUT"] = &Mission::Put;
+    	method["DELETE"] = &Mission::Delete;
+    	method["CONNECT"] = &Mission::Connect;
+    	method["OPTIONS"] = &Mission::Options;
+        method["TRACE"] = &Mission::Trace;
+        post_way["/adduser"] = &Mission::Register;
 	};
 	
 	//析构函数，保证描述符正确关闭

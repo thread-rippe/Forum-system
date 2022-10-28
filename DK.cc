@@ -78,7 +78,9 @@ static ssize_t rio_read(rio_t *rp, char *usrbuf, size_t n){
 	int cnt;
 	
 	while (rp->rio_cnt <= 0) {
-		rp->rio_cnt = recv(rp->rio_fd, rp->rio_buf, sizeof(rp->rio_buf), 0);
+        //cout << "rio缓冲区读完了";
+		rp->rio_cnt = read(rp->rio_fd, rp->rio_buf, sizeof(rp->rio_buf));
+        //cout << rp->rio_buf << "rio_read结果" << endl;
 		if (rp->rio_cnt < 0) {
 			if(errno != EINTR)
 				return -1;
@@ -456,28 +458,24 @@ void Mission::get_filetype(string& filename, string& filetype){
 void Mission::start(){
     //cout << "开始喽" << endl;    
     char buf[MAXLINE];
+    //read_all(buf);
         rio_t rio;
         rio_Readinitb(&rio, conned);
         rio_Readlineb(&rio, buf, MAXLINE);
         cout << "请求报头：" << endl;
         cout << buf;
+        cout << "报头结束" << endl;
 
         string usrbuf(buf);
         //cout << "string类报头：" << endl;
-        cout << usrbuf;
+        //cout << usrbuf;
         istringstream input(usrbuf);
         string me, uri, version;
         input >> me >> uri >> version;
+        //cout << me << endl;
 	    read_requesthdrs(&rio);
         if(me == "POST"){
-            cout << "来到了post";
-            rio_Readlineb(&rio, buf, MAXLINE);
-            cout << buf;
-            rio_Readlineb(&rio, buf, MAXLINE);
-            cout << buf;
-            rio_Readlineb(&rio, buf, MAXLINE);
-            cout << buf;
-            cout << "出去了";
+            data = string(rio.rio_bufptr);
         }
         if(cookie.size() == 0){
             make_cookie();
@@ -492,20 +490,16 @@ void Mission::read_requesthdrs(rio_t *rp){
         while(temp != "\r\n" && temp.size() >= 2){
                 rio_Readlineb(rp, buf, MAXLINE);
                 temp = string(buf);
-                cout << temp.size() << endl;
+                //cout << temp.size() << endl;
                 //cout << temp << endl;
                 if(temp.find("Cookie:") != string::npos){
                     if(catch_cookie(temp)){
-                        if(name.size() != 0){                                                                                                                                      
-                           sql_connect.set_cookie(cookie, name);                                                                                                                  
-                        }else{                                                                                                                                                     
-                            //if(!sql_connect.find_cookie(cookie, name)){                                                                                                            
-                            //    name = "";                                                                                                                                         
-                            //    cout << "cookie查找失败" << endl;                                                                                                                  
-                            //}else{                                                                                                                                                 
-                            //    cout << "获取成功" << endl;                                                                                                                        
-                            //}                                                                                                                                                      
-                        }   
+                        if(name.size() != 0){
+                            //set_cookie();
+                        }
+                        else{
+                            //find_cookie();
+                        }
                     }
                 }
                 cout << temp;
@@ -542,13 +536,13 @@ void Mission::Get(const string& uri){
         }
 }
 void Mission::Head(const string& uri){
-	string errcode = "501", errmsg = "未实现";
-	error(errcode, errmsg);	
+    string errcode = "501", errmsg = "未实现";
+    error(errcode, errmsg);
 }
 void Mission::Post(const string& uri){
-	string errcode = "501", errmsg = "未实现";    
-        error(errcode, errmsg);
-
+    data = splice_string(data);
+    cout << data << endl;
+    (this->*post_way[uri])();
 }
 void Mission::Put(const string& uri){
 	string errcode = "501", errmsg = "未实现";    
@@ -569,6 +563,18 @@ void Mission::Options(const string& uri){
 void Mission::Trace(const string& uri){
 	string errcode = "501", errmsg = "未实现";    
         error(errcode, errmsg);
+}
+
+void Mission::Register(){
+    istringstream input(data);
+    string Uname, passwd, Age, Sex;
+    input >> Uname >> Sex >> Age >> passwd;
+    //sql_connect.new_user(Uname, passwd, Age, Sex);
+    name = Uname;
+    if(cookie.size() > 0){
+        //set_cookie();
+    }
+    (this->*method["GET"])("/home.html");
 }
 
 void Mission::make_cookie(){
@@ -598,6 +604,76 @@ bool Mission::catch_cookie(const string& string_has_cookie){
     cookie = temp.substr(index, 16);
     cout << "获取到的cookie为：" << cookie << endl;
     return true;
+}
+
+string Mission::splice_string(string& data){
+    for(auto& c: data){
+        if(c == '&'){
+            c = ' ';
+        }
+    }
+    string ret = "";
+    istringstream input(data);
+    string temp;
+    while(input >> temp){
+        //cout << temp << " ";
+        auto index = temp.find("=");
+        //cout << index << endl;
+        temp = temp.substr(index + 1);
+        temp = url_decode(temp);
+        //cout << temp << endl;
+        ret += temp + " ";
+    }
+    return ret;
+}
+
+bool Mission::set_cookie(){
+    if(sql_connect.find_cookie(cookie, name)){
+        return true;
+    }
+    if(!sql_connect.set_cookie(cookie, name)){
+        cout << "插入失败" << endl;
+        return false;
+    }
+    cout << "插入成功" << endl;
+    return true;
+}
+
+bool Mission::find_cookie(){
+    if(sql_connect.find_cookie(cookie, name)){
+        cout << "找到了： " << name << endl;
+        return false;
+    }else{
+        cout << "没找到" << endl;
+    }
+}
+
+string Mission::url_decode(const string& src)
+{
+	string dst;
+	string::size_type size  = src.size();
+	string::size_type index = 0;
+	unsigned char  index_c1 = 0;
+	unsigned char  index_c2 = 0;
+
+	for(index = 0; index < size; index++)
+	{
+		if('%' == src[index] && (index+2) < size && isxdigit(src[index+1]) && isxdigit(src[index+2]))
+		{
+			index_c1 = URLHEXMAP.find(src[++index]);
+			index_c2 = URLHEXMAP.find(src[++index]);
+			dst.push_back(index_c1 << 4 | index_c2);
+		}
+		else if('+' == src[index])
+		{
+			dst.push_back(' ');
+		}
+		else
+		{
+			dst.push_back(src[index]);
+		}
+	}
+	return dst;
 }
 
 //sbuf函数实现
