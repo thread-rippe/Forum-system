@@ -47,12 +47,22 @@ bool M_sql::new_user(const string& Uname, const string& passwd, const string& Ag
 
 bool M_sql::confirm_user(const string& user_id, const string& passwd)
 {
-	string sql = "select * from user where user = "+user_id;
-	mysql_query(link, sql.c_str());
-	result = mysql_store_result(link);
+    cout << user_id << endl;
+    string sql = "select Uname, Ped from user where Uname = '"+user_id + "'";
+    cout << "登陆前" << endl;
+    if(mysql_query(link, sql.c_str())){
+        cout << "查询失败" << endl;
+        return false;
+    }
+    if(!(result = mysql_store_result(link))){
+        cout << "结果集获取失败";
+        return false;
+    }
+    cout << "登陆后" << endl;
 	if (row = mysql_fetch_row(result))
 	{
-		if (row[0] == user_id && row[2] == passwd)
+        cout << "确认用户中" << endl;
+		if (row[0] == user_id && row[1] == passwd)
 		{
 			return true;
 		}
