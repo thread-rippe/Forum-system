@@ -466,6 +466,9 @@ void Mission::start(){
         cout << buf;
         cout << "报头结束" << endl;
 
+        //sql_connect.set_cookie("a", "a");
+        //string temp = "";
+        //sql_connect.find_cookie("asdfasdf", temp);
         string usrbuf(buf);
         //cout << "string类报头：" << endl;
         //cout << usrbuf;
@@ -495,10 +498,12 @@ void Mission::read_requesthdrs(rio_t *rp){
                 if(temp.find("Cookie:") != string::npos){
                     if(catch_cookie(temp)){
                         if(name.size() != 0){
-                            //set_cookie();
+                            set_cookie();
                         }
                         else{
-                            //find_cookie();
+                            //cout << cookie << endl;
+                            find_cookie();
+                            cout << name << endl;
                         }
                     }
                 }
@@ -508,6 +513,7 @@ void Mission::read_requesthdrs(rio_t *rp){
 }
 
 void Mission::Get(const string& uri){
+    cout << "Get开始" << endl;
 	string errcode, errmsg;
 	string filename, cgiargs;
         struct stat sbuf;
@@ -568,13 +574,30 @@ void Mission::Trace(const string& uri){
 void Mission::Register(){
     istringstream input(data);
     string Uname, passwd, Age, Sex;
-    input >> Uname >> Sex >> Age >> passwd;
-    //sql_connect.new_user(Uname, passwd, Age, Sex);
+    input >> Uname >> Age >> Sex >> passwd;
+    sql_connect.new_user(Uname, passwd, Age, Sex);
     name = Uname;
     if(cookie.size() > 0){
-        //set_cookie();
+        set_cookie();
     }
     (this->*method["GET"])("/home.html");
+}
+
+void Mission::Enter(){
+    istringstream input(data);
+    string t_name, passwd;
+    input >> t_name >> passwd;
+    if(!sql_connect.confirm_user(name, passwd)){
+        cout << "看样子没有这个用户呢";
+        (this->*method["GET"])("/register.html");
+    }else{
+        cout << "登陆成功" << endl;
+        name = t_name;
+        if(cookie.size() > 0){
+            set_cookie();
+        }
+        (this->*method["GET"])("/main.html");
+    }
 }
 
 void Mission::make_cookie(){

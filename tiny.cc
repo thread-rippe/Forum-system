@@ -10,10 +10,10 @@ void doit(int fd);
 
 const int MAX_THREAD = 8;
 
-const string host = "127.0.0.1";
+const string host = "192.168.25.252";
 const string user = "root";
-const string passwd = "240307";
-const string database = "student";
+const string passwd = "123456";
+const string database = "try";
 
 sbuf<int> usr_buf(MAX_THREAD);
 int main(int argc, char **argv){

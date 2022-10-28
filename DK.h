@@ -139,6 +139,7 @@ private:
 	void Trace(const string& uri);
 	
     void Register();
+    void Enter();
 
     //自处理相关函数
     void make_cookie();
@@ -165,6 +166,7 @@ public:
     	method["OPTIONS"] = &Mission::Options;
         method["TRACE"] = &Mission::Trace;
         post_way["/adduser"] = &Mission::Register;
+        post_way["/login"] = &Mission::Enter;
 	};
 	
 	//析构函数，保证描述符正确关闭
