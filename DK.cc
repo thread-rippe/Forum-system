@@ -387,7 +387,7 @@ bool Mission::parse_uri(const string& uri, string& filename, string& cgiargs){
                 cgiargs = "";
                 filename = "." + uri;
                 if(uri.size() == 1 && uri[0] == '/'){
-                        filename += "/html/home.html";
+                        filename += "home.html";
                 }
                 return true;
         }else{
@@ -469,6 +469,16 @@ void Mission::start(){
         string me, uri, version;
         input >> me >> uri >> version;
 	    read_requesthdrs(&rio);
+        if(me == "POST"){
+            cout << "来到了post";
+            rio_Readlineb(&rio, buf, MAXLINE);
+            cout << buf;
+            rio_Readlineb(&rio, buf, MAXLINE);
+            cout << buf;
+            rio_Readlineb(&rio, buf, MAXLINE);
+            cout << buf;
+            cout << "出去了";
+        }
         if(cookie.size() == 0){
             make_cookie();
         }
@@ -478,9 +488,11 @@ void Mission::start(){
 void Mission::read_requesthdrs(rio_t *rp){
 	char buf[MAXLINE];
         rio_Readlineb(rp, buf, MAXLINE);
-        while(strcmp(buf, "\r\n")){
+        string temp(buf);
+        while(temp != "\r\n" && temp.size() >= 2){
                 rio_Readlineb(rp, buf, MAXLINE);
-                string temp(buf);
+                temp = string(buf);
+                cout << temp.size() << endl;
                 //cout << temp << endl;
                 if(temp.find("Cookie:") != string::npos){
                     if(catch_cookie(temp)){
@@ -496,7 +508,7 @@ void Mission::read_requesthdrs(rio_t *rp){
                         }   
                     }
                 }
-                cout << buf;
+                cout << temp;
         }
         return;
 }
