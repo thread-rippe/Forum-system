@@ -90,10 +90,11 @@
         <div class="R_register">
             <form action="adduser" method="post">
              <h3 style="color: rgb(122, 211, 247);">立即注册</h3>
-             <p>邮箱</p>
-             <p><input type="text" id="R_email" name="r_name"></p>
+             
              <p >用户名</p>
              <p><input type="text" placeholder="用户名长度不能超过8位" id="R_user" name="r_user"></p>
+             <p>年龄</p>
+             <p><input type="text" id="R_age" name="r_age"></p>
              <p> 性别</p>
              <p>
                 <span>男</span>
@@ -104,7 +105,7 @@
              <p >密码</p>
              <p><input type="password" placeholder="密码长度至少为6位且为数字和字母的组合" id="R_pwd" name="r_pwd"></p>
              <p >确认密码</p>
-             <p><input type="password" placeholder="两次密码需一致" id="R_repwd" onkeyup="checkpassword()"></p>
+             <p><input type="password" placeholder="两次密码需一致" id="R_repwd" name="r_repwd" onkeyup="checkpassword()"></p>
              <span id="tishi"></span></input>
              <p><button id="R_registerbtn" onclick=javascrtpt:jump()>注册</button></p>
             </form>
@@ -117,16 +118,6 @@
             <p><button id="R_loginbtn" onclick=javascrtpt:jump3()>登录</button></p>
         </div>
         <script>
- 
-            R_email.onchange = function(){
-		    var R_email = this.value;
-		    var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-		    if(!reg.test(R_email)){
-		    	alert("邮箱格式不正确，请重新输入！");
-                return false;
-		    }
-	        }
- 
             R_user.onchange = function(){
 		    var  R_user= this.value;
 		    var reg = /^\S{1,8}$/;
@@ -157,17 +148,16 @@
  
             function jump(){
                 localStorage.setItem("username",document.getElementById("R_user").value);
+                localStorage.setItem("age",document.getElementById("R_age").value);
                 localStorage.setItem("password",document.getElementById("R_pwd").value);
-                localStorage.setItem("email",document.getElementById("R_email").value);
- 
-                var Email = document.getElementById("R_email");  
+                
                 var User = document.getElementById("R_user");  
-                var Toux = document.getElementById("toux");
+                var Age = document.getElementById("R_age");
                 var Password = document.getElementById("R_pwd");
                 var Repassword = document.getElementById("R_repwd");
  
-                if(Email.value == "" || User.value ==""|| Password.value =="") {            
-                    alert("邮箱、用户名、头像或密码不能为空！");            
+                if(Age.value == "" || User.value ==""|| Password.value =="") {            
+                    alert("年龄、用户名或密码不能为空！");         
                     return false;            
                 }  
                 else if(Password.value == Repassword.value) {
