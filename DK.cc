@@ -574,9 +574,9 @@ void Mission::Trace(const string& uri){
 void Mission::Register(){
     istringstream input(data);
     string Uname, passwd, Age, Sex, who;
-    input >> Uname >> Age >> Sex >> >> who >> passwd;
+    input >> Uname >> Age >> Sex >> who >> passwd;
     if(who == "company"){
-        sql_connect.new_company(Uname, passwd, Age, Sex, "T");
+        sql_connect.new_user(Uname, passwd, Age, Sex, "T");
     }else{
         sql_connect.new_user(Uname, passwd, Age, Sex, "F");
     }
@@ -600,7 +600,8 @@ void Mission::Enter(){
     string t_name, passwd;
     input >> t_name >> passwd;
     int k;
-    if(!(k = sql_connect.confirm_user(name, passwd))){
+    cout << t_name << endl;
+    if(!(k = sql_connect.confirm_user(t_name, passwd))){
         cout << "看样子没有这个用户呢";
         (this->*method["GET"])("/register.html");
     }else{
@@ -639,14 +640,14 @@ void Mission::show_all(){
     buf += "Server: Tiny Web Server\r\n";
     buf += "Connection: close\r\n";
     buf += "Content-length: " + to_string(ret.size()) + "\r\n";
-    buf += "Content-type: " + "text/html" + "\r\n\r\n";
+    buf += "Content-type: text/html\r\n\r\n";
     cout << "响应报头：" << endl;
     cout << buf;
     buf += ret;
     rio_Writen(conned, const_cast<char*>(buf.c_str()), buf.size());
 }
 
-void insert_text(){
+void Mission::insert_text(){
     if(!check_name_exist()){
         (this->*method["GET"])("/home.html");
         return;
@@ -752,6 +753,13 @@ string Mission::url_decode(const string& src)
 		}
 	}
 	return dst;
+}
+
+bool Mission::check_name_exist(){
+    if(name.size() > 0){
+        return true;
+    }
+    return false;
 }
 
 //sbuf函数实现

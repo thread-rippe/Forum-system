@@ -10,7 +10,7 @@ void doit(int fd);
 
 const int MAX_THREAD = 8;
 
-const string host = "192.168.25.252";
+const string host = "192.168.126.252";
 const string user = "root";
 const string passwd = "123456";
 const string database = "try";

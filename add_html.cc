@@ -17,7 +17,16 @@ int main(){
         istringstream input(temp);
         input >> name >> passwd >> age >> sex >> who;
     }
-    ofstream out("home/dakericy/Forum-system/html/" + name + ".html");
+    string way = "home/dakericy/Forum-system/html/";
+    way += name;
+    way += ".html";
+    ofstream out(way);
+    if(out.is_open()){
+        cout << "成功打开" << endl;
+    }else{
+        cout << "打开失败" << endl;
+        return 0;
+    }
     out << "<html>" << endl;
     out << "<head>" << endl;
     out << "<meta charset=utf-8>" << endl;

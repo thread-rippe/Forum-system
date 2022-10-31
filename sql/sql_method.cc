@@ -15,7 +15,7 @@ bool M_sql::set_cookie(const string& cookie, const string& id)
 		}
 		else
 		{
-			cout << "修改Uid成功"; << endl;
+			cout << "修改Uid成功" << endl;
 			return true;
 		}
 	}
@@ -57,11 +57,13 @@ bool M_sql::find_cookie(const string& cookie, string& id)
 	{
         cout << "成功" << endl;
 		id = row[0];
+        mysql_free_result(result);
 		return true;
 	}
 	else 
 	{
         cout << "失败" << endl;
+        mysql_free_result(result);
 		return false;
 	}
 }
@@ -83,11 +85,14 @@ bool M_sql::new_user(const string& Uname, const string& passwd, const string& Ag
 
 int M_sql::confirm_user(const string& user_id, const string& passwd)//改变返回返回值，个人1，企业2，错0
 {
+    //mysql_free_result(result);
     cout << user_id << endl;
-    string sql = "select Uname, Ped，is_company from user where Uname = '"+user_id + "'";
+    string sql = "select Uname, Ped, iscompany from user where Uname = '"+user_id + "'";
     cout << "登陆前" << endl;
-    if(mysql_query(link, sql.c_str())){
+    int k;
+    if((k = mysql_query(link, sql.c_str()))){
         cout << "查询失败" << endl;
+        cout << k << endl;
         return 0;
     }
     if(!(result = mysql_store_result(link))){
@@ -101,26 +106,32 @@ int M_sql::confirm_user(const string& user_id, const string& passwd)//改变返�
 		if (row[0] == user_id && row[1] == passwd)
 		{
 			cout << "确认完成，区分个人与企业" << endl;
+            //return 1;
 			//当用户id及密码匹配后，区分个人和企业
 			if (row[2] == "T")
 			{
+                mysql_free_result(result);
 				return 2;
 			}
-			else
+			else{
+                mysql_free_result(result);
 				return 1;
-		}
-		else
-			return 0;
+		    }
+        }
+        mysql_free_result(result);
+		return 0;
 	}
 	else
 	{
+        mysql_free_result(result);
 		return 0;
 	}
 }
 
 bool M_sql::find_user(const string& name, string& Ped ,string& Age, string& sex, string& is_company)//显示用户的所有信息
 {
-	string sql = "select Ped,Age,Sex,is_company from user where Uname = '" + name + "'";
+    //mysql_free_result(result);
+	string sql = "select Ped,Age,Sex,iscompany from user where Uname = '" + name + "'";
 	cout << "查询用户信息前" << endl;
 	if (!mysql_query(link, sql.c_str())) {
 		cout << "查询成功" << endl;
@@ -144,10 +155,12 @@ bool M_sql::find_user(const string& name, string& Ped ,string& Age, string& sex,
 		Age = row[1];
 		sex = row[2];
 		is_company = row[3];
+        mysql_free_result(result);
 		return true;
 	}
 	else
 	{
+        mysql_free_result(result);
 		cout << "失败" << endl;
 		return false;
 	}
@@ -185,6 +198,7 @@ bool M_sql::show_post(string& ret)
 	}
 	else {
 		cout << "没有得到结果集" << endl;
+        mysql_free_result(result);
 		return false;
 	}
 	cout << "查询后" << endl;
@@ -196,12 +210,14 @@ bool M_sql::show_post(string& ret)
 	while (row = mysql_fetch_row(result))
 	{
 		ret += "<p><big>";
-		ret += row[1] + "</big>";
-		ret += row[0] + "</p><br/>";
-		ret += "<p>" + row[2] + "</p><br/>";
+		ret += row[1]; 
+        ret += "</big>";
+		ret += row[0];
+        ret += "</p><br/>";
+		ret += "<p>";
+        ret += row[2];
+        ret += "</p><br/>";
 	}
+    mysql_free_result(result);
 	return true;
 }
-
-
-
