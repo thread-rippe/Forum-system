@@ -140,12 +140,16 @@ private:
 	
     void Register();
     void Enter();
+    void GET_userinfo();
+    void show_all();
+    void insert_text();
 
     //自处理相关函数
     void make_cookie();
     bool catch_cookie(const string& string);
     int read_all(char* buf);
     string splice_string(string& data);                   //将post发过来的数据先一步解析;
+    bool check_name_exist();
 
     //url解析
     string url_decode(const string& src);
@@ -167,6 +171,9 @@ public:
         method["TRACE"] = &Mission::Trace;
         post_way["/adduser"] = &Mission::Register;
         post_way["/login"] = &Mission::Enter;
+        post_way["/all_text"]= &Mission::show_all;
+        post_way["/person_info"] = &Mission::GET_userinfo;
+        post_way["/newtext"] = &Mission::insert_text;
 	};
 	
 	//析构函数，保证描述符正确关闭

@@ -573,21 +573,34 @@ void Mission::Trace(const string& uri){
 
 void Mission::Register(){
     istringstream input(data);
-    string Uname, passwd, Age, Sex;
-    input >> Uname >> Age >> Sex >> passwd;
-    sql_connect.new_user(Uname, passwd, Age, Sex);
+    string Uname, passwd, Age, Sex, who;
+    input >> Uname >> Age >> Sex >> >> who >> passwd;
+    if(who == "company"){
+        sql_connect.new_company(Uname, passwd, Age, Sex, "T");
+    }else{
+        sql_connect.new_user(Uname, passwd, Age, Sex, "F");
+    }
     name = Uname;
     if(cookie.size() > 0){
         set_cookie();
     }
     (this->*method["GET"])("/home.html");
+    string buf = "";
+    char *emptylist[] = {nullptr};
+    string cgiargs = Uname + "&" + passwd + "&" + Age + "&" + Sex + "&" + who;
+    if(Fork() == 0){
+        setenv("QUERY_STRING", cgiargs.c_str(), 1);
+        Execve("add_html", emptylist, environ);
+    }
+    Wait(nullptr);
 }
 
 void Mission::Enter(){
     istringstream input(data);
     string t_name, passwd;
     input >> t_name >> passwd;
-    if(!sql_connect.confirm_user(name, passwd)){
+    int k;
+    if(!(k = sql_connect.confirm_user(name, passwd))){
         cout << "看样子没有这个用户呢";
         (this->*method["GET"])("/register.html");
     }else{
@@ -596,8 +609,53 @@ void Mission::Enter(){
         if(cookie.size() > 0){
             set_cookie();
         }
-        (this->*method["GET"])("/main.html");
+        if(k == 1){
+            (this->*method["GET"])("/main2.html");
+        }else{
+            (this->*method["GET"])("/main.html");
+        }
     }
+}
+
+void Mission::GET_userinfo(){
+    if(!check_name_exist()){
+        (this->*method["GET"])("/home.html");
+        return;
+    }
+    string url = "/html/";
+    url += name;
+    url += ".html";
+    (this->*method["GET"])(url);
+}
+
+void Mission::show_all(){
+    string ret = "";
+    sql_connect.show_post(ret);
+    string buf = "";
+    buf += "HTTP/1.0 200 OK\r\n";
+    if(cookie.size() != 0){
+        buf += "set-Cookie:id=" + cookie + "\r\n";
+    }
+    buf += "Server: Tiny Web Server\r\n";
+    buf += "Connection: close\r\n";
+    buf += "Content-length: " + to_string(ret.size()) + "\r\n";
+    buf += "Content-type: " + "text/html" + "\r\n\r\n";
+    cout << "响应报头：" << endl;
+    cout << buf;
+    buf += ret;
+    rio_Writen(conned, const_cast<char*>(buf.c_str()), buf.size());
+}
+
+void insert_text(){
+    if(!check_name_exist()){
+        (this->*method["GET"])("/home.html");
+        return;
+    }
+    istringstream input(data);
+    string head, text;
+    input >> head >> text;
+    sql_connect.new_post(head, name, text);
+    (this->*post_way["/all_text"])();
 }
 
 void Mission::make_cookie(){
@@ -651,9 +709,6 @@ string Mission::splice_string(string& data){
 }
 
 bool Mission::set_cookie(){
-    if(sql_connect.find_cookie(cookie, name)){
-        return true;
-    }
     if(!sql_connect.set_cookie(cookie, name)){
         cout << "插入失败" << endl;
         return false;
