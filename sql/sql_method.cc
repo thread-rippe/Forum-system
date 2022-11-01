@@ -212,15 +212,17 @@ bool M_sql::show_post(string& ret)
 	ret += "<body>";
 	while (row = mysql_fetch_row(result))
 	{
-		ret += "<p><big>";
+		ret += "<p><b><big>";
 		ret += row[1]; 
         ret += "</big>";
+        ret += "   作者是：";
 		ret += row[0];
-        ret += "</p><br/>";
-		ret += "<p>";
+        ret += "</b><br/>";
+		ret += "<b>";
         ret += row[2];
-        ret += "</p><br/>";
+        ret += "</b></p><br/>";
 	}
+    ret += "<a href="">回到主页面</a>";
     mysql_free_result(result);
 	return true;
 }

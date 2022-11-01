@@ -391,7 +391,7 @@ bool Mission::parse_uri(const string& uri, string& filename, string& cgiargs){
                 if(uri.size() == 1 && uri[0] == '/'){
                     if(name.size() > 0 && cookie.size() > 0){
                        string ped = "", age = "", sex = "", is_company = "";
-                       sql_connect.find(name, ped, age, sex, is_company);
+                       sql_connect.find_user(name, ped, age, sex, is_company);
                        if(is_company == "T"){
                            filename += "main2.html";
                        }else{
