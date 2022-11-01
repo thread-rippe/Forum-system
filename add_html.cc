@@ -53,7 +53,9 @@ int main(){
         out << "<b>您是普通用户。</b><br>" << endl;
     }
     out << "</p>" << endl;
-    out << "<a href="">回到主页面</a>";
+    out << "<a href=\"/\">回到主页面</a>" << endl;
+    out << "<br/>" << endl;
+    out << "<a href=\"home.html\">返回登陆界面</a>" << endl;
     out << "</form>" << endl;
     out << "</body>" << endl;
     out << "</html>" << endl;

@@ -472,14 +472,17 @@ void Mission::start(){
         rio_t rio;
         rio_Readinitb(&rio, conned);
         rio_Readlineb(&rio, buf, MAXLINE);
+        string usrbuf(buf);
         cout << "请求报头：" << endl;
-        cout << buf;
+        cout << usrbuf;
+        if(usrbuf.size() == 0){
+            return;
+        }
         cout << "报头结束" << endl;
 
         //sql_connect.set_cookie("a", "a");
         //string temp = "";
         //sql_connect.find_cookie("asdfasdf", temp);
-        string usrbuf(buf);
         //cout << "string类报头：" << endl;
         //cout << usrbuf;
         istringstream input(usrbuf);
@@ -622,9 +625,9 @@ void Mission::Enter(){
         }
         cout << k << endl;
         if(k == 1){
-            (this->*method["GET"])("/main2.html");
-        }else{
             (this->*method["GET"])("/main.html");
+        }else{
+            (this->*method["GET"])("/main2.html");
         }
     }
 }

@@ -108,13 +108,16 @@ int M_sql::confirm_user(const string& user_id, const string& passwd)//改变返�
 			cout << "确认完成，区分个人与企业" << endl;
             //return 1;
 			//当用户id及密码匹配后，区分个人和企业
-            cout << row[2] << endl;
-			if (row[2] == "T")
+            //cout << row[2] << endl;
+            string judge = "T";
+			if (row[2] == judge)
 			{
+                cout << "是企业" << endl;
                 mysql_free_result(result);
 				return 2;
 			}
 			else{
+                cout << "是用户" << endl;
                 mysql_free_result(result);
 				return 1;
 		    }
@@ -222,7 +225,7 @@ bool M_sql::show_post(string& ret)
         ret += row[2];
         ret += "</b></p><br/>";
 	}
-    ret += "<a href="">回到主页面</a>";
+    ret += "<a href=\"/\">回到主页面</a>";
     mysql_free_result(result);
 	return true;
 }
