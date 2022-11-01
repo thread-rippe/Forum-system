@@ -389,7 +389,17 @@ bool Mission::parse_uri(const string& uri, string& filename, string& cgiargs){
                 cgiargs = "";
                 filename = "." + uri;
                 if(uri.size() == 1 && uri[0] == '/'){
+                    if(name.size() > 0 && cookie.size() > 0){
+                       string ped = "", age = "", sex = "", is_company = "";
+                       sql_connect.find(name, ped, age, sex, is_company);
+                       if(is_company == "T"){
+                           filename += "main2.html";
+                       }else{
+                           filename += "main.html";
+                       }
+                    }else{
                         filename += "home.html";
+                    }
                 }
                 return true;
         }else{
@@ -660,7 +670,7 @@ void Mission::insert_text(){
     input >> head >> text;
     cout << head << " " << name << " " << text << endl;
     sql_connect.new_post(head, name, text);
-    (this->*method["GET"])("/main.html");
+    (this->*method["GET"])("/");
 }
 
 void Mission::make_cookie(){

@@ -108,6 +108,7 @@ int M_sql::confirm_user(const string& user_id, const string& passwd)//改变返�
 			cout << "确认完成，区分个人与企业" << endl;
             //return 1;
 			//当用户id及密码匹配后，区分个人和企业
+            cout << row[2] << endl;
 			if (row[2] == "T")
 			{
                 mysql_free_result(result);
