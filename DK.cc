@@ -610,6 +610,7 @@ void Mission::Enter(){
         if(cookie.size() > 0){
             set_cookie();
         }
+        cout << k << endl;
         if(k == 1){
             (this->*method["GET"])("/main2.html");
         }else{
@@ -626,10 +627,12 @@ void Mission::GET_userinfo(){
     string url = "/html/";
     url += name;
     url += ".html";
+    cout << url << endl;
     (this->*method["GET"])(url);
 }
 
 void Mission::show_all(){
+    cout << "显示全部帖子";
     string ret = "";
     sql_connect.show_post(ret);
     string buf = "";
@@ -655,8 +658,9 @@ void Mission::insert_text(){
     istringstream input(data);
     string head, text;
     input >> head >> text;
+    cout << head << " " << name << " " << text << endl;
     sql_connect.new_post(head, name, text);
-    (this->*post_way["/all_text"])();
+    (this->*method["GET"])("/main.html");
 }
 
 void Mission::make_cookie(){

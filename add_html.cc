@@ -17,9 +17,10 @@ int main(){
         istringstream input(temp);
         input >> name >> passwd >> age >> sex >> who;
     }
-    string way = "home/dakericy/Forum-system/html/";
+    string way = "html/";
     way += name;
     way += ".html";
+    cout << way << endl;
     ofstream out(way);
     if(out.is_open()){
         cout << "成功打开" << endl;

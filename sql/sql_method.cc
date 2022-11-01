@@ -8,7 +8,7 @@ bool M_sql::set_cookie(const string& cookie, const string& id)
 		string sql1 = "update cookie set Uid='" + id + "' where cok = '" + cookie + "' ";
 		bool ret = mysql_query(link, sql1.c_str());
 		cout << "执行Uid修改语句" << endl;
-		if (!ret)
+		if (ret)
 		{
 			cout << "修改Uid失败" << endl;
 			return false;
@@ -25,7 +25,7 @@ bool M_sql::set_cookie(const string& cookie, const string& id)
 		//cout << sql << endl;
 		int ret = mysql_query(link, sql.c_str());
 		cout << "执行cookie插入语句" << endl;
-		if (ret < 0)
+		if (ret)
 		{
 			return false;
 		}
@@ -70,7 +70,7 @@ bool M_sql::find_cookie(const string& cookie, string& id)
 
 bool M_sql::new_user(const string& Uname, const string& passwd, const string& Age, const string& Sex, const string& is_company)//合并了个人和企业表，个人F，企业T
 {
-		string sql = "insert into user(uname, ped, age, sex, is_company) values ('" + Uname + "','" + passwd + "','" + Age +  "','" + Sex +"','"+is_company+"')";
+		string sql = "insert into user(uname, ped, age, sex, iscompany) values ('" + Uname + "','" + passwd + "','" + Age +  "','" + Sex +"','"+is_company+"')";
 		int ret = mysql_query(link, sql.c_str());
         cout << "执行插入新用户语句" << endl;
 		if (ret < 0)
@@ -168,15 +168,17 @@ bool M_sql::find_user(const string& name, string& Ped ,string& Age, string& sex,
 
 bool M_sql::new_post(const string& head, const string& author, const string& content)//插入帖子
 {
-	string sql = "insert into post(title, author, content) values ('" + head + "','" + author + "','" + content + "')";
+	string sql = "insert into post(author, title, content) values ('" + author + "','" + head + "','" + content + "')";
 	int ret = mysql_query(link, sql.c_str());
 	cout << "执行插入新贴子语句" << endl;
-	if (ret < 0)
+	if (ret)
 	{
+        cout << "插入新帖子失败" << endl;
 		return false;
 	}
 	else
 	{
+        cout << "插入新帖子成功" << endl;
 		return true;
 	}
 }
